@@ -1,6 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 import { AppLayout } from "@/components/AppLayout";
 import { Button, Card, Input, Label, PageTitle, Row, SectionTitle, Tag } from "@/components/ui-kit";
 import { useSorare, type Rarity, type Role } from "@/lib/sorare-store";
@@ -19,12 +31,28 @@ const QUINT_LABELS: (Role | "EXTRA")[] = ["GK", "DF", "MD", "FW", "EXTRA"];
 const ALLSTAR_LABELS: (Role | "EXTRA")[] = ["GK", "DF", "DF", "MD", "MD", "FW", "EXTRA"];
 
 function ObiettiviPage() {
-  const { premi, setPremi, roi, setRoi, cards, setCards, competitions, winLog, setWinLog, wonCards, setWonCards } = useSorare();
+  const {
+    premi,
+    setPremi,
+    roi,
+    setRoi,
+    cards,
+    setCards,
+    competitions,
+    winLog,
+    setWinLog,
+    wonCards,
+    setWonCards,
+  } = useSorare();
   // Totali vincite cash derivati ESCLUSIVAMENTE dalla Cronologia Vincite Cash
   const premiCalc: Record<string, number> = (() => {
     const out: Record<string, number> = {};
-    Object.keys(premi).forEach((k) => { out[k] = 0; });
-    winLog.forEach((w) => { out[w.key] = (out[w.key] ?? 0) + w.amount; });
+    Object.keys(premi).forEach((k) => {
+      out[k] = 0;
+    });
+    winLog.forEach((w) => {
+      out[w.key] = (out[w.key] ?? 0) + w.amount;
+    });
     return out;
   })();
   const [inputVal, setInputVal] = useState("");
@@ -45,15 +73,25 @@ function ObiettiviPage() {
   const [aEssVal, setAEssVal] = useState("");
   const [aEssRar, setAEssRar] = useState<Rarity>("LIMITED");
   const [aCashVal, setACashVal] = useState("");
-  const [aCard, setACard] = useState({ name: "", season: "26/27", rarity: "LIMITED" as Rarity, role: "GK" as Role, serial: "", value: "", comp: "" });
-
+  const [aCard, setACard] = useState({
+    name: "",
+    season: "26/27",
+    rarity: "LIMITED" as Rarity,
+    role: "GK" as Role,
+    serial: "",
+    value: "",
+    comp: "",
+  });
 
   const handleUpdate = () => {
     if (!inputVal) return;
     const amount = parseFloat(inputVal);
     if (!Number.isFinite(amount)) return;
     if (!(target in premi)) setPremi({ ...premi, [target]: 0 });
-    setWinLog([...winLog, { key: target, amount, date: winDate || new Date().toISOString().slice(0, 10) }]);
+    setWinLog([
+      ...winLog,
+      { key: target, amount, date: winDate || new Date().toISOString().slice(0, 10) },
+    ]);
     setInputVal("");
   };
 
@@ -91,7 +129,6 @@ function ObiettiviPage() {
     setWinLog(winLog.filter((_, idx) => idx !== i));
     setEditWinIdx(null);
   };
-
 
   const handleRegister = () => {
     if (!qCash || !qEss) return;
@@ -133,7 +170,9 @@ function ObiettiviPage() {
           (c.serial || "").trim().toLowerCase() === sr,
       );
       if (dup) {
-        alert("Errore: esiste già una carta con nome, stagione, rarità e seriale identici nella tua galleria.");
+        alert(
+          "Errore: esiste già una carta con nome, stagione, rarità e seriale identici nella tua galleria.",
+        );
         return;
       }
     }
@@ -188,12 +227,19 @@ function ObiettiviPage() {
     setAPlayers(["", "", "", "", "", "", ""]);
     setAEssVal("");
     setACashVal("");
-    setACard({ name: "", season: "26/27", rarity: "LIMITED", role: "GK", serial: "", value: "", comp: "" });
+    setACard({
+      name: "",
+      season: "26/27",
+      rarity: "LIMITED",
+      role: "GK",
+      serial: "",
+      value: "",
+      comp: "",
+    });
     setAEssOn(false);
     setACashOn(false);
     setACardOn(false);
   };
-
 
   const sortedRoi = Object.entries(roi).sort((a, b) => b[1][sortBy] - a[1][sortBy]);
 
@@ -230,7 +276,18 @@ function ObiettiviPage() {
     );
     return match?.rarity;
   };
-  const pieColors = ["#f43f5e", "#f59e0b", "#22d3ee", "#a855f7", "#84cc16", "#ec4899", "#38bdf8", "#fb923c", "#4ade80", "#e879f9"];
+  const pieColors = [
+    "#f43f5e",
+    "#f59e0b",
+    "#22d3ee",
+    "#a855f7",
+    "#84cc16",
+    "#ec4899",
+    "#38bdf8",
+    "#fb923c",
+    "#4ade80",
+    "#e879f9",
+  ];
   const premiKeys = Object.keys(premi);
   const colorForKey = (k: string) => {
     const i = premiKeys.indexOf(k);
@@ -242,14 +299,31 @@ function ObiettiviPage() {
   const premiTotal = pieData.reduce((s, d) => s + d.value, 0);
 
   // Istogramma mensile vincite cash (gen 2026 → dic 2027)
-  const MONTH_LABELS = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+  const MONTH_LABELS = [
+    "Gen",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mag",
+    "Giu",
+    "Lug",
+    "Ago",
+    "Set",
+    "Ott",
+    "Nov",
+    "Dic",
+  ];
   const histoKeys = Array.from(new Set([...premiKeys, ...winLog.map((w) => w.key)]));
   const histoData = (() => {
     const rows: Record<string, number | string>[] = [];
     for (let y = 2026; y <= 2027; y++) {
       for (let m = 0; m < 12; m++) {
-        const row: Record<string, number | string> = { month: `${MONTH_LABELS[m]} ${String(y).slice(2)}` };
-        histoKeys.forEach((k) => { row[k] = 0; });
+        const row: Record<string, number | string> = {
+          month: `${MONTH_LABELS[m]} ${String(y).slice(2)}`,
+        };
+        histoKeys.forEach((k) => {
+          row[k] = 0;
+        });
         rows.push(row);
       }
     }
@@ -269,7 +343,12 @@ function ObiettiviPage() {
   const [editRoi, setEditRoi] = useState<string | null>(null);
   const [editRoiName, setEditRoiName] = useState("");
   const [editRoiCash, setEditRoiCash] = useState("");
-  const [editRoiEssR, setEditRoiEssR] = useState<Record<Rarity, string>>({ LIMITED: "0", RARE: "0", SR: "0", UNIQUE: "0" });
+  const [editRoiEssR, setEditRoiEssR] = useState<Record<Rarity, string>>({
+    LIMITED: "0",
+    RARE: "0",
+    SR: "0",
+    UNIQUE: "0",
+  });
   const startEditRoi = (name: string) => {
     setEditRoi(name);
     setEditRoiName(name);
@@ -321,12 +400,22 @@ function ObiettiviPage() {
     setEditRoi(null);
   };
 
-  const ToggleBtn = ({ on, onClick, label }: { on: boolean; onClick: () => void; label: string }) => (
+  const ToggleBtn = ({
+    on,
+    onClick,
+    label,
+  }: {
+    on: boolean;
+    onClick: () => void;
+    label: string;
+  }) => (
     <button
       type="button"
       onClick={onClick}
       className={`rounded-md border px-3 py-1.5 text-xs font-semibold transition ${
-        on ? "border-accent bg-accent/20 text-accent" : "border-border bg-background text-muted-foreground hover:bg-secondary"
+        on
+          ? "border-accent bg-accent/20 text-accent"
+          : "border-border bg-background text-muted-foreground hover:bg-secondary"
       }`}
     >
       {on ? "🟢" : "⚫"} {label}
@@ -347,7 +436,6 @@ function ObiettiviPage() {
               <Row key={k}>
                 <span className="text-muted-foreground truncate">{k.replace("_", " · ")}</span>
                 <span className="font-semibold text-accent">${v.toFixed(2)}</span>
-
               </Row>
             ))}
           </div>
@@ -393,7 +481,13 @@ function ObiettiviPage() {
                       <Cell key={d.key} fill={colorForKey(d.key)} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(v: number) => `$${v.toFixed(2)}`} contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }} />
+                  <Tooltip
+                    formatter={(v: number) => `$${v.toFixed(2)}`}
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                    }}
+                  />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                 </PieChart>
               </ResponsiveContainer>
@@ -451,11 +545,19 @@ function ObiettiviPage() {
                   .map(({ w, i }) => (
                     <tr key={i} className="border-t border-border">
                       <td className="py-2">
-                        <Button variant="ghost" onClick={() => startEditWin(i)} className="!px-2 !py-1 text-xs">⚙️</Button>
+                        <Button
+                          variant="ghost"
+                          onClick={() => startEditWin(i)}
+                          className="!px-2 !py-1 text-xs"
+                        >
+                          ⚙️
+                        </Button>
                       </td>
                       <td className="py-2 whitespace-nowrap">{w.date}</td>
                       <td className="py-2">{w.key.replace("_", " · ")}</td>
-                      <td className="py-2 text-right font-semibold text-accent">${w.amount.toFixed(2)}</td>
+                      <td className="py-2 text-right font-semibold text-accent">
+                        ${w.amount.toFixed(2)}
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -464,15 +566,14 @@ function ObiettiviPage() {
         )}
       </Card>
 
-
-
       <Card>
         <div className="mb-3">
           <SectionTitle>📊 Vincite Cash per Mese (2026 → 2027)</SectionTitle>
         </div>
         {histoTotal === 0 ? (
           <p className="text-sm text-muted-foreground">
-            Nessuna vincita cash registrata — l'istogramma si aggiorna automaticamente quando incrementi una vincita.
+            Nessuna vincita cash registrata — l'istogramma si aggiorna automaticamente quando
+            incrementi una vincita.
           </p>
         ) : (
           <div className="h-72 w-full overflow-x-auto">
@@ -496,10 +597,20 @@ function ObiettiviPage() {
                     tickLine={{ stroke: "#94a3b8" }}
                   />
                   <Tooltip
-                    formatter={(v: number, n: string) => [`$${Number(v).toFixed(2)}`, String(n).replace("_", " · ")]}
-                    contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", fontSize: 12 }}
+                    formatter={(v: number, n: string) => [
+                      `$${Number(v).toFixed(2)}`,
+                      String(n).replace("_", " · "),
+                    ]}
+                    contentStyle={{
+                      background: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      fontSize: 12,
+                    }}
                   />
-                  <Legend wrapperStyle={{ fontSize: 11 }} formatter={(v: string) => v.replace("_", " · ")} />
+                  <Legend
+                    wrapperStyle={{ fontSize: 11 }}
+                    formatter={(v: string) => v.replace("_", " · ")}
+                  />
                   {histoKeys.map((k) => (
                     <Bar key={k} dataKey={k} stackId="a" fill={colorForKey(k)} />
                   ))}
@@ -520,7 +631,10 @@ function ObiettiviPage() {
         <div className="grid gap-2 sm:grid-cols-2">
           {qPlayers.map((p, idx) => {
             const slot = QUINT_LABELS[idx];
-            const taken = qPlayers.filter((_, i) => i !== idx).map(baseName).filter(Boolean);
+            const taken = qPlayers
+              .filter((_, i) => i !== idx)
+              .map(baseName)
+              .filter(Boolean);
             const opts = datalistOptions(slot).filter((o) => !taken.includes(baseName(o)));
             return (
               <div key={idx} className="relative">
@@ -529,7 +643,9 @@ function ObiettiviPage() {
                     <option key={o} value={o} />
                   ))}
                 </datalist>
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">🔍</span>
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  🔍
+                </span>
                 <Input
                   list={`q-slot-${idx}`}
                   placeholder={`${slot} — cerca in galleria`}
@@ -538,7 +654,9 @@ function ObiettiviPage() {
                     const val = e.target.value;
                     const bn = baseName(val);
                     if (bn && qPlayers.some((o, i) => i !== idx && baseName(o) === bn)) {
-                      alert("Questo giocatore è già presente nella formazione. Puoi usare una sola copia per giocatore.");
+                      alert(
+                        "Questo giocatore è già presente nella formazione. Puoi usare una sola copia per giocatore.",
+                      );
                       return;
                     }
                     const copy = [...qPlayers];
@@ -565,7 +683,11 @@ function ObiettiviPage() {
                 onChange={(e) => setQEssRar(e.target.value as Rarity)}
                 className="w-32 rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
               >
-                {RARITIES.map((r) => <option key={r} value={r}>{RARITY_EMOJI[r]} {r}</option>)}
+                {RARITIES.map((r) => (
+                  <option key={r} value={r}>
+                    {RARITY_EMOJI[r]} {r}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -582,7 +704,10 @@ function ObiettiviPage() {
         <div className="grid gap-2 sm:grid-cols-2">
           {aPlayers.map((p, idx) => {
             const slot = ALLSTAR_LABELS[idx];
-            const taken = aPlayers.filter((_, i) => i !== idx).map(baseName).filter(Boolean);
+            const taken = aPlayers
+              .filter((_, i) => i !== idx)
+              .map(baseName)
+              .filter(Boolean);
             const opts = datalistOptions(slot).filter((o) => !taken.includes(baseName(o)));
             return (
               <div key={idx} className="relative">
@@ -591,7 +716,9 @@ function ObiettiviPage() {
                     <option key={o} value={o} />
                   ))}
                 </datalist>
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">🔍</span>
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  🔍
+                </span>
                 <Input
                   list={`a-slot-${idx}`}
                   placeholder={`${slot} — cerca in galleria`}
@@ -600,7 +727,9 @@ function ObiettiviPage() {
                     const val = e.target.value;
                     const bn = baseName(val);
                     if (bn && aPlayers.some((o, i) => i !== idx && baseName(o) === bn)) {
-                      alert("Questo giocatore è già presente nella formazione. Puoi usare una sola copia per giocatore.");
+                      alert(
+                        "Questo giocatore è già presente nella formazione. Puoi usare una sola copia per giocatore.",
+                      );
                       return;
                     }
                     const copy = [...aPlayers];
@@ -627,13 +756,21 @@ function ObiettiviPage() {
           <div className="mt-3">
             <Label>Essenze Vinte</Label>
             <div className="flex gap-2">
-              <Input inputMode="decimal" value={aEssVal} onChange={(e) => setAEssVal(e.target.value)} />
+              <Input
+                inputMode="decimal"
+                value={aEssVal}
+                onChange={(e) => setAEssVal(e.target.value)}
+              />
               <select
                 value={aEssRar}
                 onChange={(e) => setAEssRar(e.target.value as Rarity)}
                 className="w-32 rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
               >
-                {RARITIES.map((r) => <option key={r} value={r}>{RARITY_EMOJI[r]} {r}</option>)}
+                {RARITIES.map((r) => (
+                  <option key={r} value={r}>
+                    {RARITY_EMOJI[r]} {r}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -641,7 +778,11 @@ function ObiettiviPage() {
         {aCashOn && (
           <div className="mt-3">
             <Label>Soldi Vinti ($)</Label>
-            <Input inputMode="decimal" value={aCashVal} onChange={(e) => setACashVal(e.target.value)} />
+            <Input
+              inputMode="decimal"
+              value={aCashVal}
+              onChange={(e) => setACashVal(e.target.value)}
+            />
           </div>
         )}
         {aCardOn && (
@@ -650,7 +791,10 @@ function ObiettiviPage() {
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <Label>Nome</Label>
-                <Input value={aCard.name} onChange={(e) => setACard({ ...aCard, name: e.target.value })} />
+                <Input
+                  value={aCard.name}
+                  onChange={(e) => setACard({ ...aCard, name: e.target.value })}
+                />
               </div>
               <div>
                 <Label>Stagione</Label>
@@ -659,7 +803,11 @@ function ObiettiviPage() {
                   onChange={(e) => setACard({ ...aCard, season: e.target.value })}
                   className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
                 >
-                  {SEASONS.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {SEASONS.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -669,7 +817,11 @@ function ObiettiviPage() {
                   onChange={(e) => setACard({ ...aCard, rarity: e.target.value as Rarity })}
                   className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
                 >
-                  {RARITIES.map((r) => <option key={r} value={r}>{r}</option>)}
+                  {RARITIES.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -679,16 +831,27 @@ function ObiettiviPage() {
                   onChange={(e) => setACard({ ...aCard, role: e.target.value as Role })}
                   className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
                 >
-                  {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                  {ROLES.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
                 <Label>Seriale</Label>
-                <Input value={aCard.serial} onChange={(e) => setACard({ ...aCard, serial: e.target.value })} />
+                <Input
+                  value={aCard.serial}
+                  onChange={(e) => setACard({ ...aCard, serial: e.target.value })}
+                />
               </div>
               <div className="sm:col-span-2">
                 <Label>Valore ($)</Label>
-                <Input inputMode="decimal" value={aCard.value} onChange={(e) => setACard({ ...aCard, value: e.target.value })} />
+                <Input
+                  inputMode="decimal"
+                  value={aCard.value}
+                  onChange={(e) => setACard({ ...aCard, value: e.target.value })}
+                />
               </div>
               <div className="sm:col-span-2">
                 <Label>Competizione (dove aggiungere la carta)</Label>
@@ -698,17 +861,21 @@ function ObiettiviPage() {
                   className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
                 >
                   <option value="">— Seleziona competizione —</option>
-                  {competitions.map((c) => <option key={c} value={c}>{c}</option>)}
+                  {competitions.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
                 </select>
                 {!aCard.comp && (
-                  <p className="mt-1 text-[11px] text-muted-foreground">Se non selezioni una competizione, la carta non verrà aggiunta alla galleria.</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Se non selezioni una competizione, la carta non verrà aggiunta alla galleria.
+                  </p>
                 )}
               </div>
-
             </div>
           </div>
         )}
-
 
         <div className="mt-4">
           <Button variant="accent" onClick={handleRegisterAllStar}>
@@ -728,7 +895,9 @@ function ObiettiviPage() {
                   ESSENZE TOTALI VINTE {RARITY_EMOJI[rar]}
                 </div>
                 <div className="mt-1 text-xl font-bold text-accent">{tot.toFixed(2)}</div>
-                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{rar}</div>
+                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  {rar}
+                </div>
               </div>
             );
           })}
@@ -768,27 +937,44 @@ function ObiettiviPage() {
                 {sortedRoi.map(([player, r], i) => (
                   <tr key={player} className="border-t border-border">
                     <td className="px-1 py-2 text-muted-foreground">{i + 1}</td>
-                    <td className={`px-1 py-2 text-right font-semibold ${sortBy === "cash" ? "text-accent" : ""}`}>${r.cash.toFixed(2)}</td>
-                    <td className={`px-1 py-2 text-right ${sortBy === "essences" ? "text-accent font-semibold" : ""}`}>
+                    <td
+                      className={`px-1 py-2 text-right font-semibold ${sortBy === "cash" ? "text-accent" : ""}`}
+                    >
+                      ${r.cash.toFixed(2)}
+                    </td>
+                    <td
+                      className={`px-1 py-2 text-right ${sortBy === "essences" ? "text-accent font-semibold" : ""}`}
+                    >
                       <div>{r.essences.toFixed(2)}</div>
                       {r.essR && (
                         <div className="text-[10px] leading-tight text-muted-foreground">
                           {RARITIES.filter((rar) => (r.essR?.[rar] ?? 0) > 0).map((rar) => (
-                            <div key={rar}>{RARITY_EMOJI[rar]} {(r.essR?.[rar] ?? 0).toFixed(2)}</div>
+                            <div key={rar}>
+                              {RARITY_EMOJI[rar]} {(r.essR?.[rar] ?? 0).toFixed(2)}
+                            </div>
                           ))}
                         </div>
                       )}
                     </td>
                     <td className="px-1 py-2 text-right">
-                      <button onClick={() => startEditRoi(player)} className="rounded-md border border-border px-1.5 py-1 text-xs hover:bg-secondary">✏️</button>
+                      <button
+                        onClick={() => startEditRoi(player)}
+                        className="rounded-md border border-border px-1.5 py-1 text-xs hover:bg-secondary"
+                      >
+                        ✏️
+                      </button>
                     </td>
                     <td className="min-w-0 break-words px-1 py-2 font-medium">
                       {rarityForKey(player) && (
-                        <span className="mr-1" title={rarityForKey(player)}>{RARITY_EMOJI[rarityForKey(player)!]}</span>
+                        <span className="mr-1" title={rarityForKey(player)}>
+                          {RARITY_EMOJI[rarityForKey(player)!]}
+                        </span>
                       )}
                       {player}
                       {serialForKey(player) && (
-                        <span className="ml-1 text-[10px] text-muted-foreground">#{serialForKey(player)}</span>
+                        <span className="ml-1 text-[10px] text-muted-foreground">
+                          #{serialForKey(player)}
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -811,24 +997,43 @@ function ObiettiviPage() {
               className="mb-3 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
             >
               {Array.from(new Set([...Object.keys(premi), editWinKey])).map((k) => (
-                <option key={k} value={k}>{k.replace("_", " · ")}</option>
+                <option key={k} value={k}>
+                  {k.replace("_", " · ")}
+                </option>
               ))}
             </select>
             <Label>Importo ($)</Label>
-            <Input inputMode="decimal" value={editWinAmount} onChange={(e) => setEditWinAmount(e.target.value)} />
+            <Input
+              inputMode="decimal"
+              value={editWinAmount}
+              onChange={(e) => setEditWinAmount(e.target.value)}
+            />
             <div className="mt-3">
               <Label>Data</Label>
-              <Input type="date" value={editWinDate} onChange={(e) => setEditWinDate(e.target.value)} />
+              <Input
+                type="date"
+                value={editWinDate}
+                onChange={(e) => setEditWinDate(e.target.value)}
+              />
             </div>
             <div className="mt-4 flex flex-wrap justify-end gap-2">
-              <Button variant="ghost" onClick={() => deleteWin(editWinIdx)} className="text-red-400 hover:text-red-300">🗑️ Elimina</Button>
-              <Button variant="ghost" onClick={() => setEditWinIdx(null)}>Annulla</Button>
-              <Button variant="accent" onClick={saveEditWin}>Salva</Button>
+              <Button
+                variant="ghost"
+                onClick={() => deleteWin(editWinIdx)}
+                className="text-red-400 hover:text-red-300"
+              >
+                🗑️ Elimina
+              </Button>
+              <Button variant="ghost" onClick={() => setEditWinIdx(null)}>
+                Annulla
+              </Button>
+              <Button variant="accent" onClick={saveEditWin}>
+                Salva
+              </Button>
             </div>
           </div>
         </div>
       )}
-
 
       {editRoi != null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -844,7 +1049,11 @@ function ObiettiviPage() {
             <div className="mt-3 grid grid-cols-2 gap-3">
               <div>
                 <Label>$ Soldi</Label>
-                <Input inputMode="decimal" value={editRoiCash} onChange={(e) => setEditRoiCash(e.target.value)} />
+                <Input
+                  inputMode="decimal"
+                  value={editRoiCash}
+                  onChange={(e) => setEditRoiCash(e.target.value)}
+                />
               </div>
               <div>
                 <Label>Essenze totali</Label>
@@ -858,7 +1067,9 @@ function ObiettiviPage() {
               <div className="grid grid-cols-2 gap-3">
                 {RARITIES.map((r) => (
                   <div key={r}>
-                    <span className="mb-1 block text-[11px] text-muted-foreground">{RARITY_EMOJI[r]} {r}</span>
+                    <span className="mb-1 block text-[11px] text-muted-foreground">
+                      {RARITY_EMOJI[r]} {r}
+                    </span>
                     <Input
                       inputMode="decimal"
                       value={editRoiEssR[r]}
@@ -886,8 +1097,12 @@ function ObiettiviPage() {
               >
                 🗑️ Rimuovi
               </Button>
-              <Button variant="ghost" onClick={() => setEditRoi(null)}>Annulla</Button>
-              <Button variant="accent" onClick={saveEditRoi}>Salva</Button>
+              <Button variant="ghost" onClick={() => setEditRoi(null)}>
+                Annulla
+              </Button>
+              <Button variant="accent" onClick={saveEditRoi}>
+                Salva
+              </Button>
             </div>
           </div>
         </div>

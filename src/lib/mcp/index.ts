@@ -6,7 +6,7 @@ import roiLeaderboard from "./tools/roi-leaderboard";
 import addCard from "./tools/add-card";
 import sellCard from "./tools/sell-card";
 
-const projectRef = import.meta.env['VITE_SUPABASE_PROJECT_ID'] ?? "project-ref-unset";
+const projectRef = import.meta.env["VITE_SUPABASE_PROJECT_ID"] ?? "project-ref-unset";
 
 export default defineMcp({
   name: "sorarehub",

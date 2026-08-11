@@ -9,9 +9,15 @@ type OAuthDetails = {
 };
 
 type OAuthApi = {
-  getAuthorizationDetails: (id: string) => Promise<{ data: OAuthDetails | null; error: { message: string } | null }>;
-  approveAuthorization: (id: string) => Promise<{ data: OAuthDetails | null; error: { message: string } | null }>;
-  denyAuthorization: (id: string) => Promise<{ data: OAuthDetails | null; error: { message: string } | null }>;
+  getAuthorizationDetails: (
+    id: string,
+  ) => Promise<{ data: OAuthDetails | null; error: { message: string } | null }>;
+  approveAuthorization: (
+    id: string,
+  ) => Promise<{ data: OAuthDetails | null; error: { message: string } | null }>;
+  denyAuthorization: (
+    id: string,
+  ) => Promise<{ data: OAuthDetails | null; error: { message: string } | null }>;
 };
 
 const oauth = () => (supabase.auth as unknown as { oauth: OAuthApi }).oauth;
@@ -39,7 +45,8 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
   errorComponent: ({ error }) => (
     <main className="flex min-h-screen items-center justify-center bg-slate-950 p-6 text-slate-100">
       <p className="max-w-md text-center text-sm text-slate-300">
-        Impossibile caricare questa richiesta di autorizzazione: {String((error as Error)?.message ?? error)}
+        Impossibile caricare questa richiesta di autorizzazione:{" "}
+        {String((error as Error)?.message ?? error)}
       </p>
     </main>
   ),
@@ -77,8 +84,8 @@ function Consent() {
       <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/80 p-6 shadow-xl">
         <h1 className="text-lg font-bold">Collega {clientName} a SorareHub</h1>
         <p className="mt-2 text-sm text-slate-400">
-          {clientName} potrà leggere e aggiornare i dati del tuo gestionale (galleria, plusvalenze, ROI, arene)
-          agendo come te.
+          {clientName} potrà leggere e aggiornare i dati del tuo gestionale (galleria, plusvalenze,
+          ROI, arene) agendo come te.
         </p>
         {error && (
           <p role="alert" className="mt-3 text-sm text-red-400">

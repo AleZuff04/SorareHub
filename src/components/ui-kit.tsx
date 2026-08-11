@@ -2,12 +2,18 @@ import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from "react
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`rounded-xl border border-border bg-card p-4 md:p-5 shadow-sm ${className}`}>{children}</div>
+    <div className={`rounded-xl border border-border bg-card p-4 md:p-5 shadow-sm ${className}`}>
+      {children}
+    </div>
   );
 }
 
 export function SectionTitle({ children }: { children: ReactNode }) {
-  return <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">{children}</h2>;
+  return (
+    <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+      {children}
+    </h2>
+  );
 }
 
 export function PageTitle({ children, badge }: { children: ReactNode; badge?: ReactNode }) {
@@ -40,7 +46,8 @@ export function Button({
   children,
   ...rest
 }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: BtnVariant }) {
-  const base = "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50";
+  const base =
+    "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold transition-colors disabled:opacity-50";
   const styles: Record<BtnVariant, string> = {
     primary: "bg-primary text-primary-foreground hover:bg-primary/90",
     accent: "bg-accent text-accent-foreground hover:bg-accent/90",

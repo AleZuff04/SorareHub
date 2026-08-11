@@ -11,7 +11,8 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (input, ctx) => {
-    if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Non autenticato" }], isError: true };
+    if (!ctx.isAuthenticated())
+      return { content: [{ type: "text", text: "Non autenticato" }], isError: true };
     const { cards } = await loadPayload(ctx);
     const sold = cards.filter(isSold);
     const rows = sold.map((c) => ({
@@ -26,7 +27,9 @@ export default defineTool({
     const total = money(rows.reduce((s, r) => s + r.profit, 0));
     const limited = rows.slice(0, input.limit ?? 100);
     return {
-      content: [{ type: "text", text: JSON.stringify({ totalProfit: total, sales: limited }, null, 2) }],
+      content: [
+        { type: "text", text: JSON.stringify({ totalProfit: total, sales: limited }, null, 2) },
+      ],
       structuredContent: { totalProfit: total, count: rows.length, sales: limited },
     };
   },

@@ -57,7 +57,10 @@ function AuthPage() {
         }
         if (res.reason === "admin_invited") {
           toast.success("Invito inviato: controlla la tua email.");
-          setMsg({ kind: "ok", text: "Accesso admin: invito inviato, controlla la tua email per completare la registrazione." });
+          setMsg({
+            kind: "ok",
+            text: "Accesso admin: invito inviato, controlla la tua email per completare la registrazione.",
+          });
         } else {
           toast.success("Richiesta di accesso inviata all'amministratore.");
           setPendingSubmitted(true);
@@ -98,9 +101,7 @@ function AuthPage() {
         <p className="text-[11px] font-medium leading-tight text-slate-200">
           Per acquistare o per ulteriori informazioni contattami!
         </p>
-        <p className="mt-0.5 text-base font-bold text-cyan-300">
-          t.me/AleZuff
-        </p>
+        <p className="mt-0.5 text-base font-bold text-cyan-300">t.me/AleZuff</p>
       </a>
 
       {/* Glow bg */}
@@ -131,106 +132,146 @@ function AuthPage() {
             <div className="rounded-xl border border-cyan-400/40 bg-cyan-400/10 p-4 text-center">
               <div className="text-3xl">📨</div>
               <p className="mt-2 text-sm text-cyan-100">
-                Richiesta inviata all'amministratore.<br />
+                Richiesta inviata all'amministratore.
+                <br />
                 Riceverai la mail di attivazione non appena la tua richiesta sarà accettata.
               </p>
             </div>
             <button
-              onClick={() => { setPendingSubmitted(false); setMode("login"); setMsg(null); }}
+              onClick={() => {
+                setPendingSubmitted(false);
+                setMode("login");
+                setMsg(null);
+              }}
               className="w-full rounded-lg border border-white/10 bg-slate-950/60 px-4 py-2 text-sm text-slate-200 hover:bg-slate-900"
             >
               ← Torna al login
             </button>
           </div>
-        ) : (<>
-
-        <form onSubmit={submit} className="space-y-3">
-          <div>
-            <label className="mb-1 block text-xs font-medium text-slate-300">Email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-white/10 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
-              placeholder="tu@esempio.com"
-            />
-          </div>
-          {mode === "login" && (
-            <div>
-              <label className="mb-1 block text-xs font-medium text-slate-300">Password</label>
-              <input
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-400/30"
-                placeholder="••••••••"
-              />
-            </div>
-          )}
-          {mode === "signup" && (
-            <p className="rounded-lg border border-fuchsia-500/30 bg-fuchsia-500/10 px-3 py-2 text-[11px] text-fuchsia-200">
-              La registrazione è soggetta ad approvazione manuale. Riceverai la mail di attivazione (con impostazione password) una volta accettata la richiesta.
-            </p>
-          )}
-
-          {msg && (
-            <div className={
-              "rounded-lg border px-3 py-2 text-xs " +
-              (msg.kind === "err"
-                ? "border-red-500/40 bg-red-500/10 text-red-300"
-                : "border-emerald-500/40 bg-emerald-500/10 text-emerald-300")
-            }>
-              {msg.text}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-gradient-to-r from-fuchsia-500 via-blue-500 to-cyan-400 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:shadow-fuchsia-500/40 disabled:opacity-60"
-          >
-            {loading ? "Attendere…" :
-              mode === "login" ? "Accedi" :
-              mode === "signup" ? "Registrati" : "Invia email di recupero"}
-          </button>
-        </form>
-
-        <div className="mt-5 space-y-2 text-center text-xs">
-          {mode === "login" && (
-            <>
-              <div className="text-slate-400">
-                Non hai un account?{" "}
-                <button onClick={() => { setMode("signup"); setMsg(null); }} className="font-semibold text-fuchsia-300 hover:text-fuchsia-200">
-                  Registrati
-                </button>
-              </div>
+        ) : (
+          <>
+            <form onSubmit={submit} className="space-y-3">
               <div>
-                <button onClick={() => { setMode("forgot"); setMsg(null); }} className="text-slate-400 hover:text-cyan-200">
-                  Password dimenticata?
-                </button>
+                <label className="mb-1 block text-xs font-medium text-slate-300">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
+                  placeholder="tu@esempio.com"
+                />
               </div>
-            </>
-          )}
-          {mode === "signup" && (
-            <div className="text-slate-400">
-              Hai già un account?{" "}
-              <button onClick={() => { setMode("login"); setMsg(null); }} className="font-semibold text-cyan-300 hover:text-cyan-200">
-                Accedi
+              {mode === "login" && (
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-slate-300">Password</label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full rounded-lg border border-white/10 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-400/30"
+                    placeholder="••••••••"
+                  />
+                </div>
+              )}
+              {mode === "signup" && (
+                <p className="rounded-lg border border-fuchsia-500/30 bg-fuchsia-500/10 px-3 py-2 text-[11px] text-fuchsia-200">
+                  La registrazione è soggetta ad approvazione manuale. Riceverai la mail di
+                  attivazione (con impostazione password) una volta accettata la richiesta.
+                </p>
+              )}
+
+              {msg && (
+                <div
+                  className={
+                    "rounded-lg border px-3 py-2 text-xs " +
+                    (msg.kind === "err"
+                      ? "border-red-500/40 bg-red-500/10 text-red-300"
+                      : "border-emerald-500/40 bg-emerald-500/10 text-emerald-300")
+                  }
+                >
+                  {msg.text}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-lg bg-gradient-to-r from-fuchsia-500 via-blue-500 to-cyan-400 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:shadow-fuchsia-500/40 disabled:opacity-60"
+              >
+                {loading
+                  ? "Attendere…"
+                  : mode === "login"
+                    ? "Accedi"
+                    : mode === "signup"
+                      ? "Registrati"
+                      : "Invia email di recupero"}
               </button>
+            </form>
+
+            <div className="mt-5 space-y-2 text-center text-xs">
+              {mode === "login" && (
+                <>
+                  <div className="text-slate-400">
+                    Non hai un account?{" "}
+                    <button
+                      onClick={() => {
+                        setMode("signup");
+                        setMsg(null);
+                      }}
+                      className="font-semibold text-fuchsia-300 hover:text-fuchsia-200"
+                    >
+                      Registrati
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => {
+                        setMode("forgot");
+                        setMsg(null);
+                      }}
+                      className="text-slate-400 hover:text-cyan-200"
+                    >
+                      Password dimenticata?
+                    </button>
+                  </div>
+                </>
+              )}
+              {mode === "signup" && (
+                <div className="text-slate-400">
+                  Hai già un account?{" "}
+                  <button
+                    onClick={() => {
+                      setMode("login");
+                      setMsg(null);
+                    }}
+                    className="font-semibold text-cyan-300 hover:text-cyan-200"
+                  >
+                    Accedi
+                  </button>
+                </div>
+              )}
+              {mode === "forgot" && (
+                <button
+                  onClick={() => {
+                    setMode("login");
+                    setMsg(null);
+                  }}
+                  className="text-cyan-300 hover:text-cyan-200"
+                >
+                  ← Torna al login
+                </button>
+              )}
             </div>
-          )}
-          {mode === "forgot" && (
-            <button onClick={() => { setMode("login"); setMsg(null); }} className="text-cyan-300 hover:text-cyan-200">
-              ← Torna al login
-            </button>
-          )}
-        </div>
-        </>)}
+          </>
+        )}
         <div className="mt-4 text-center text-[10px] text-slate-500">
-          <Link to="/" className="hover:text-slate-300">SorareHub</Link> · gestionale privato e sicuro
+          <Link to="/" className="hover:text-slate-300">
+            SorareHub
+          </Link>{" "}
+          · gestionale privato e sicuro
         </div>
       </div>
     </div>

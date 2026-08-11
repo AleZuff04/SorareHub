@@ -35,12 +35,15 @@ function ProfiloPage() {
         setB1(p?.backup_email_1 ?? "");
         setB2(p?.backup_email_2 ?? "");
       } catch (e) {
-        if (!cancelled) toast.error(e instanceof Error ? e.message : "Errore nel caricamento del profilo");
+        if (!cancelled)
+          toast.error(e instanceof Error ? e.message : "Errore nel caricamento del profilo");
       } finally {
         if (!cancelled) setLoadingProfile(false);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
@@ -87,7 +90,8 @@ function ProfiloPage() {
       toast.error(error.message);
       return setMsg({ kind: "err", text: error.message });
     }
-    setPw(""); setConfirm("");
+    setPw("");
+    setConfirm("");
     toast.success("✅ Password aggiornata");
     setMsg({ kind: "ok", text: "✅ Password aggiornata" });
   };
@@ -145,31 +149,46 @@ function ProfiloPage() {
         <h2 className="mb-3 text-sm font-semibold">🔐 Cambia password</h2>
         <form onSubmit={change} className="space-y-3">
           <input
-            type="password" required minLength={6}
-            value={pw} onChange={(e) => setPw(e.target.value)}
+            type="password"
+            required
+            minLength={6}
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
             placeholder="Nuova password"
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
           <input
-            type="password" required minLength={6}
-            value={confirm} onChange={(e) => setConfirm(e.target.value)}
+            type="password"
+            required
+            minLength={6}
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
             placeholder="Conferma nuova password"
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
           {msg && (
-            <div className={"rounded-md border px-3 py-2 text-xs " + (msg.kind === "err" ? "border-red-500/40 bg-red-500/10 text-red-300" : "border-emerald-500/40 bg-emerald-500/10 text-emerald-300")}>
+            <div
+              className={
+                "rounded-md border px-3 py-2 text-xs " +
+                (msg.kind === "err"
+                  ? "border-red-500/40 bg-red-500/10 text-red-300"
+                  : "border-emerald-500/40 bg-emerald-500/10 text-emerald-300")
+              }
+            >
               {msg.text}
             </div>
           )}
           <div className="flex flex-wrap gap-2">
             <button
-              type="submit" disabled={loading}
+              type="submit"
+              disabled={loading}
               className="rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-60"
             >
               {loading ? "Aggiornamento…" : "Aggiorna password"}
             </button>
             <button
-              type="button" onClick={sendReset}
+              type="button"
+              onClick={sendReset}
               className="rounded-md border border-border px-3 py-2 text-xs font-semibold hover:bg-secondary"
             >
               Inviami email di recupero

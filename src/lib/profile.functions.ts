@@ -9,7 +9,7 @@ const emailSchema = z.string().email().max(200);
  * Falls back to the input when no backup match exists.
  */
 export const resolvePrimaryEmail = createServerFn({ method: "POST" })
-  .inputValidator((input) => z.object({ email: emailSchema }).parse(input))
+  .validator((input) => z.object({ email: emailSchema }).parse(input))
   .handler(async ({ data }) => {
     const email = data.email.trim().toLowerCase();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -52,11 +52,17 @@ export const getMyProfile = createServerFn({ method: "GET" })
 /** AUTH: update own backup emails */
 export const updateBackupEmails = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) =>
+  .validator((input) =>
     z
       .object({
-        backup_email_1: z.union([emailSchema, z.literal("")]).nullable().optional(),
-        backup_email_2: z.union([emailSchema, z.literal("")]).nullable().optional(),
+        backup_email_1: z
+          .union([emailSchema, z.literal("")])
+          .nullable()
+          .optional(),
+        backup_email_2: z
+          .union([emailSchema, z.literal("")])
+          .nullable()
+          .optional(),
       })
       .parse(input),
   )

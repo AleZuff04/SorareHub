@@ -186,13 +186,13 @@ function AdminPage() {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                  <button
-                    disabled={busyId === r.id || busyId === r.email}
-                    onClick={() => sendReset(r.email)}
-                    className="rounded-md border border-border px-2 py-1 text-xs hover:bg-secondary disabled:opacity-50"
-                  >
-                    🔑 Reset password
-                  </button>
+                    <button
+                      disabled={busyId === r.id || busyId === r.email}
+                      onClick={() => sendReset(r.email)}
+                      className="rounded-md border border-border px-2 py-1 text-xs hover:bg-secondary disabled:opacity-50"
+                    >
+                      🔑 Reset password
+                    </button>
                     <button
                       disabled={busyId === r.id}
                       onClick={() => reject(r.id)}

@@ -12,7 +12,8 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (input, ctx) => {
-    if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Non autenticato" }], isError: true };
+    if (!ctx.isAuthenticated())
+      return { content: [{ type: "text", text: "Non autenticato" }], isError: true };
     const { roi } = await loadPayload(ctx);
     const sortBy = input.sortBy ?? "cash";
     const rows = Object.entries(roi)

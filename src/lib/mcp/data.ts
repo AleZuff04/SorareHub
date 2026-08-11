@@ -16,7 +16,12 @@ export type Card = {
 };
 
 export type ArenaSession = { spent: number; won: number; xp: number };
-export type RoiEntry = { cash: number; essences: number; xp: number; essR?: Partial<Record<Rarity, number>> };
+export type RoiEntry = {
+  cash: number;
+  essences: number;
+  xp: number;
+  essR?: Partial<Record<Rarity, number>>;
+};
 export type WinLogEntry = { key: string; amount: number; date: string };
 
 export type Payload = {

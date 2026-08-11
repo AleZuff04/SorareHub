@@ -10,7 +10,8 @@ export const Route = createFileRoute("/arene")({
 });
 
 function ArenePage() {
-  const { sessions, setSessions, sessionsRare, setSessionsRare, sessionsSr, setSessionsSr } = useSorare();
+  const { sessions, setSessions, sessionsRare, setSessionsRare, sessionsSr, setSessionsSr } =
+    useSorare();
 
   return (
     <AppLayout title="Arene (Essenze / XP)">
@@ -42,7 +43,10 @@ function ArenaBlock({
 
   const handleLog = () => {
     if (!spent || !won || !xp) return;
-    setSessions([...sessions, { spent: parseInt(spent) || 0, won: parseInt(won) || 0, xp: parseInt(xp) || 0 }]);
+    setSessions([
+      ...sessions,
+      { spent: parseInt(spent) || 0, won: parseInt(won) || 0, xp: parseInt(xp) || 0 },
+    ]);
     setSpent("");
     setWon("");
     setXp("");
@@ -60,7 +64,11 @@ function ArenaBlock({
   const saveEdit = () => {
     if (editIdx == null) return;
     const copy = [...sessions];
-    copy[editIdx] = { spent: parseInt(eSpent) || 0, won: parseInt(eWon) || 0, xp: parseInt(eXp) || 0 };
+    copy[editIdx] = {
+      spent: parseInt(eSpent) || 0,
+      won: parseInt(eWon) || 0,
+      xp: parseInt(eXp) || 0,
+    };
     setSessions(copy);
     setEditIdx(null);
   };
@@ -90,7 +98,11 @@ function ArenaBlock({
         <StatBox label="Totale XP" value={totalXp} tone="info" />
       </div>
       <div className="flex gap-3">
-        <StatBox label="COSTO PER XP (cumulativo)" value={costoXpLabel} tone={costPerXp <= 0 ? "positive" : "negative"} />
+        <StatBox
+          label="COSTO PER XP (cumulativo)"
+          value={costoXpLabel}
+          tone={costPerXp <= 0 ? "positive" : "negative"}
+        />
       </div>
 
       <Card>
@@ -98,15 +110,30 @@ function ArenaBlock({
         <div className="grid gap-3 sm:grid-cols-3">
           <div>
             <Label>Essenze Spese</Label>
-            <Input inputMode="numeric" value={spent} onChange={(e) => setSpent(e.target.value)} placeholder="0" />
+            <Input
+              inputMode="numeric"
+              value={spent}
+              onChange={(e) => setSpent(e.target.value)}
+              placeholder="0"
+            />
           </div>
           <div>
             <Label>Essenze Vinte</Label>
-            <Input inputMode="numeric" value={won} onChange={(e) => setWon(e.target.value)} placeholder="0" />
+            <Input
+              inputMode="numeric"
+              value={won}
+              onChange={(e) => setWon(e.target.value)}
+              placeholder="0"
+            />
           </div>
           <div>
             <Label>XP Guadagnati</Label>
-            <Input inputMode="numeric" value={xp} onChange={(e) => setXp(e.target.value)} placeholder="0" />
+            <Input
+              inputMode="numeric"
+              value={xp}
+              onChange={(e) => setXp(e.target.value)}
+              placeholder="0"
+            />
           </div>
         </div>
         <div className="mt-4">
@@ -148,7 +175,9 @@ function ArenaBlock({
                       <td className="py-2">{s.spent}</td>
                       <td className="py-2">{s.won}</td>
                       <td className="py-2 text-primary">{s.xp}</td>
-                      <td className={`py-2 font-semibold ${n >= 0 ? "text-accent" : "text-destructive"}`}>
+                      <td
+                        className={`py-2 font-semibold ${n >= 0 ? "text-accent" : "text-destructive"}`}
+                      >
                         {n >= 0 ? "+" : ""}
                         {n}
                       </td>
@@ -169,7 +198,11 @@ function ArenaBlock({
             <div className="grid gap-3">
               <div>
                 <Label>Essenze Spese</Label>
-                <Input inputMode="numeric" value={eSpent} onChange={(e) => setESpent(e.target.value)} />
+                <Input
+                  inputMode="numeric"
+                  value={eSpent}
+                  onChange={(e) => setESpent(e.target.value)}
+                />
               </div>
               <div>
                 <Label>Essenze Vinte</Label>
@@ -181,11 +214,19 @@ function ArenaBlock({
               </div>
             </div>
             <div className="mt-4 flex flex-wrap justify-end gap-2">
-              <Button variant="ghost" onClick={() => removeSession(editIdx)} className="text-red-400 hover:text-red-300">
+              <Button
+                variant="ghost"
+                onClick={() => removeSession(editIdx)}
+                className="text-red-400 hover:text-red-300"
+              >
                 🗑️ Elimina
               </Button>
-              <Button variant="ghost" onClick={() => setEditIdx(null)}>Annulla</Button>
-              <Button variant="accent" onClick={saveEdit}>Salva</Button>
+              <Button variant="ghost" onClick={() => setEditIdx(null)}>
+                Annulla
+              </Button>
+              <Button variant="accent" onClick={saveEdit}>
+                Salva
+              </Button>
             </div>
           </div>
         </div>

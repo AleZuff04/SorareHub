@@ -18,11 +18,13 @@ function arenaStats(sessions: ArenaSession[]) {
 export default defineTool({
   name: "get_overview",
   title: "Panoramica account",
-  description: "Riepilogo dell'account: carte in galleria, spesa totale, plusvalenze, vincite per competizione e statistiche arene.",
+  description:
+    "Riepilogo dell'account: carte in galleria, spesa totale, plusvalenze, vincite per competizione e statistiche arene.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
-    if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Non autenticato" }], isError: true };
+    if (!ctx.isAuthenticated())
+      return { content: [{ type: "text", text: "Non autenticato" }], isError: true };
     const p = await loadPayload(ctx);
     const owned = p.cards.filter((c) => !isSold(c));
     const sold = p.cards.filter(isSold);
@@ -32,7 +34,9 @@ export default defineTool({
       soldCards: sold.length,
       totalSpentOnOwned: money(owned.reduce((s, c) => s + (c.buy ?? 0), 0)),
       totalProfit: money(sold.reduce((s, c) => s + ((c.sell as number) - c.buy), 0)),
-      prizesByKey: Object.fromEntries(Object.entries(p.premi ?? {}).map(([k, v]) => [k, money(v ?? 0)])),
+      prizesByKey: Object.fromEntries(
+        Object.entries(p.premi ?? {}).map(([k, v]) => [k, money(v ?? 0)]),
+      ),
       arenas: {
         limited: arenaStats(p.sessions ?? []),
         rare: arenaStats(p.sessionsRare ?? []),

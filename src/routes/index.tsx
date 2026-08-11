@@ -17,7 +17,13 @@ const selectClass =
   "w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/30";
 
 function compSlug(name: string) {
-  return "tab-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return (
+    "tab-" +
+    name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+  );
 }
 
 function compAbbr(name: string) {
@@ -39,7 +45,9 @@ function QuickJump({ competitions }: { competitions: string[] }) {
           title={c}
           aria-label={`Vai al tabellone ${c}`}
           onClick={() =>
-            document.getElementById(compSlug(c))?.scrollIntoView({ behavior: "smooth", block: "start" })
+            document
+              .getElementById(compSlug(c))
+              ?.scrollIntoView({ behavior: "smooth", block: "start" })
           }
           className="group relative grid h-10 w-10 place-items-center rounded-md border border-border bg-card/90 text-[10px] font-bold text-muted-foreground shadow-md backdrop-blur transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
         >
@@ -52,7 +60,6 @@ function QuickJump({ competitions }: { competitions: string[] }) {
     </div>
   );
 }
-
 
 function GalleriaPage() {
   const { cards, setCards, competitions, setCompetitions, premi, setPremi } = useSorare();
@@ -69,11 +76,39 @@ function GalleriaPage() {
   const [pMode, setPMode] = useState<"direct" | "swap">("direct");
   const [pSwapCash, setPSwapCash] = useState("");
   const [pSwapCashRecv, setPSwapCashRecv] = useState("");
-  type SwapRow = { name: string; season: string; serial: string; value: string; rarity: Rarity; role: Role };
-  const emptySwap = (): SwapRow => ({ name: "", season: "", serial: "", value: "", rarity: "LIMITED", role: "GK" });
+  type SwapRow = {
+    name: string;
+    season: string;
+    serial: string;
+    value: string;
+    rarity: Rarity;
+    role: Role;
+  };
+  const emptySwap = (): SwapRow => ({
+    name: "",
+    season: "",
+    serial: "",
+    value: "",
+    rarity: "LIMITED",
+    role: "GK",
+  });
   const [pSwapRows, setPSwapRows] = useState<SwapRow[]>([emptySwap()]);
-  type RecvRow = { name: string; season: string; serial: string; value: string; rarity: Rarity; role: Role };
-  const emptyRecv = (): RecvRow => ({ name: "", season: "", serial: "", value: "", rarity: "LIMITED", role: "GK" });
+  type RecvRow = {
+    name: string;
+    season: string;
+    serial: string;
+    value: string;
+    rarity: Rarity;
+    role: Role;
+  };
+  const emptyRecv = (): RecvRow => ({
+    name: "",
+    season: "",
+    serial: "",
+    value: "",
+    rarity: "LIMITED",
+    role: "GK",
+  });
   const [pRecvRows, setPRecvRows] = useState<RecvRow[]>([emptyRecv()]);
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [eName, setEName] = useState("");
@@ -122,7 +157,16 @@ function GalleriaPage() {
       const buyValue = parseFloat((nominal - creditsUsed).toFixed(2));
       setCards([
         ...remainingCards,
-        { name, season, buy: buyValue, sell: null, comp: pComp, serial: serial || undefined, rarity: pRarity, role: pRole },
+        {
+          name,
+          season,
+          buy: buyValue,
+          sell: null,
+          comp: pComp,
+          serial: serial || undefined,
+          rarity: pRarity,
+          role: pRole,
+        },
       ]);
       toast.success(`${name} aggiunto in ${pComp} · €${buyValue.toFixed(2)}`);
     } else {
@@ -178,10 +222,7 @@ function GalleriaPage() {
         }
       }
 
-      const receivedValuesSum = receivedRows.reduce(
-        (s, r) => s + (parseFloat(r.value) || 0),
-        0,
-      );
+      const receivedValuesSum = receivedRows.reduce((s, r) => s + (parseFloat(r.value) || 0), 0);
       const delta = (totalCounterparty - receivedValuesSum) / receivedRows.length;
       const newCards = receivedRows.map((r) => {
         const vDuringSwap = parseFloat(r.value) || 0;
@@ -362,7 +403,6 @@ function GalleriaPage() {
     toast.success(`${c?.name ?? "Carta"} rimosso dalla galleria`);
   };
 
-
   const owned = cards.filter((c) => c.sell == null);
   const totalSpesa = owned.reduce((s, c) => s + (c.buy || 0), 0);
 
@@ -410,7 +450,11 @@ function GalleriaPage() {
             <>
               <div>
                 <Label>Nome Giocatore</Label>
-                <Input value={pName} onChange={(e) => setPName(e.target.value)} placeholder="Es. Petar Musa" />
+                <Input
+                  value={pName}
+                  onChange={(e) => setPName(e.target.value)}
+                  placeholder="Es. Petar Musa"
+                />
               </div>
               <div>
                 <Label>Stagione</Label>
@@ -429,7 +473,9 @@ function GalleriaPage() {
                   className={selectClass}
                 >
                   {RARITIES.map((r) => (
-                    <option key={r} value={r}>{r}</option>
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -441,7 +487,9 @@ function GalleriaPage() {
                   className={selectClass}
                 >
                   {ROLES.map((r) => (
-                    <option key={r} value={r}>{r}</option>
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -501,7 +549,6 @@ function GalleriaPage() {
                 )}
               </div>
             </div>
-
           ) : (
             <div className="sm:col-span-2 space-y-4">
               <div>
@@ -528,7 +575,9 @@ function GalleriaPage() {
                       className="grid grid-cols-1 sm:grid-cols-[1fr_80px_80px_90px_90px_90px_auto] gap-2 rounded-md border border-border bg-background/40 p-2"
                     >
                       <div className="relative">
-                        <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">🔍</span>
+                        <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                          🔍
+                        </span>
                         <Input
                           list="swap-players-list"
                           placeholder="Giocatore"
@@ -554,7 +603,9 @@ function GalleriaPage() {
                         className={selectClass}
                       >
                         {RARITIES.map((r) => (
-                          <option key={r} value={r}>{r}</option>
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
                         ))}
                       </select>
                       <select
@@ -564,7 +615,9 @@ function GalleriaPage() {
                         aria-label="Ruolo"
                       >
                         {ROLES.map((r) => (
-                          <option key={r} value={r}>{r}</option>
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
                         ))}
                       </select>
                       <Input
@@ -616,7 +669,9 @@ function GalleriaPage() {
                         className={selectClass}
                       >
                         {RARITIES.map((r) => (
-                          <option key={r} value={r}>{r}</option>
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
                         ))}
                       </select>
                       <select
@@ -626,7 +681,9 @@ function GalleriaPage() {
                         aria-label="Ruolo"
                       >
                         {ROLES.map((r) => (
-                          <option key={r} value={r}>{r}</option>
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
                         ))}
                       </select>
                       <Input
@@ -665,14 +722,19 @@ function GalleriaPage() {
                   pSwapRows.reduce((s, r) => s + (parseFloat(r.value) || 0), 0) -
                   (parseFloat(pSwapCashRecv) || 0)
                 ).toFixed(2)}
-                . A ogni giocatore ricevuto verrà sommato (contropartita − somma dei valori durante scambio) ÷ N ricevuti.
+                . A ogni giocatore ricevuto verrà sommato (contropartita − somma dei valori durante
+                scambio) ÷ N ricevuti.
               </p>
             </div>
           )}
           {pMode === "direct" && (
             <div className="sm:col-span-2">
               <Label>Seriale</Label>
-              <Input value={pSerial} onChange={(e) => setPSerial(e.target.value)} placeholder="Es. #123" />
+              <Input
+                value={pSerial}
+                onChange={(e) => setPSerial(e.target.value)}
+                placeholder="Es. #123"
+              />
             </div>
           )}
         </div>
@@ -721,170 +783,213 @@ function GalleriaPage() {
         });
         return (
           <div key={compName} id={compSlug(compName)} className="scroll-mt-20">
-          <Card>
-            <div className="flex items-center justify-between mb-3 gap-2">
-              <h3 className="text-lg font-bold min-w-0 truncate">🏆 Tabellone {compName}</h3>
+            <Card>
+              <div className="flex items-center justify-between mb-3 gap-2">
+                <h3 className="text-lg font-bold min-w-0 truncate">🏆 Tabellone {compName}</h3>
 
-              <div className="flex items-center gap-2 shrink-0">
-                <span className="text-xs text-muted-foreground">{allComp.length} carte · €{compSpesa.toFixed(2)}</span>
-                <Button
-                  variant="ghost"
-                  onClick={() => renameComp(compName)}
-                  className="!px-2 !py-1 text-xs"
-                  aria-label={`Rinomina ${compName}`}
-                >
-                  ✏️
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => deleteComp(compName)}
-                  className="!px-2 !py-1 text-xs !text-destructive"
-                  aria-label={`Elimina ${compName}`}
-                >
-                  🗑️
-                </Button>
-              </div>
-            </div>
-            <div className="mb-3 grid grid-cols-1 sm:grid-cols-[1fr_140px_140px_140px] gap-2">
-              <div className="relative">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">🔍</span>
-                <Input
-                  placeholder={`Cerca in ${compName} (nome o seriale)`}
-                  value={search[compName] ?? ""}
-                  onChange={(e) => setSearch({ ...search, [compName]: e.target.value })}
-                  className="pl-8"
-                />
-              </div>
-              <select
-                value={rFilter}
-                onChange={(e) => setRarityFilter({ ...rarityFilter, [compName]: e.target.value as "ALL" | Rarity })}
-                className={selectClass}
-                aria-label="Filtra per rarità"
-              >
-                <option value="ALL">Rarità: TUTTE</option>
-                {RARITIES.map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </select>
-              <select
-                value={sFilter}
-                onChange={(e) => setSeasonFilter({ ...seasonFilter, [compName]: e.target.value })}
-                className={selectClass}
-                aria-label="Filtra per stagione"
-              >
-                <option value="ALL">Stagione: TUTTE</option>
-                {SEASONS.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-              <select
-                value={roFilter}
-                onChange={(e) => setRoleFilter({ ...roleFilter, [compName]: e.target.value as "ALL" | Role })}
-                className={selectClass}
-                aria-label="Filtra per ruolo"
-              >
-                <option value="ALL">Tutti i ruoli</option>
-                {ROLES.map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </select>
-            </div>
-
-            {allComp.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Nessuna carta in questo campionato.</p>
-            ) : list.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Nessuna carta trovata con i filtri selezionati.</p>
-            ) : (
-              <div className="space-y-2">
-                {list.map(({ c: card, i }) => (
-                  <div
-                    key={i}
-                    className="rounded-md border border-border bg-background/40 px-3 py-2 text-sm"
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-xs text-muted-foreground">
+                    {allComp.length} carte · €{compSpesa.toFixed(2)}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    onClick={() => renameComp(compName)}
+                    className="!px-2 !py-1 text-xs"
+                    aria-label={`Rinomina ${compName}`}
                   >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="min-w-0">
-                        <span className="font-medium">{card.name}</span>{" "}
-                        <span className="text-muted-foreground">({card.season})</span>
-                        {card.rarity && (
-                          <span className="ml-2 rounded bg-secondary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-secondary-foreground">
-                            {card.rarity}
-                          </span>
-                        )}
-                        {card.serial && (
-                          <span className="ml-2 text-xs text-muted-foreground">#{card.serial}</span>
-                        )}
-                        {card.swap && (
-                          <span className="ml-2 text-xs font-semibold text-accent">
-                            (€{card.buy.toFixed(2)})
-                          </span>
-                        )}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        {card.swap ? (
-                          <>
-                            <span className="font-semibold text-accent">€{card.buy.toFixed(2)}</span>
-                            <span className="rounded bg-primary/15 px-2 py-0.5 text-xs font-semibold text-primary">
-                              🔄 Scambio
+                    ✏️
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => deleteComp(compName)}
+                    className="!px-2 !py-1 text-xs !text-destructive"
+                    aria-label={`Elimina ${compName}`}
+                  >
+                    🗑️
+                  </Button>
+                </div>
+              </div>
+              <div className="mb-3 grid grid-cols-1 sm:grid-cols-[1fr_140px_140px_140px] gap-2">
+                <div className="relative">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    🔍
+                  </span>
+                  <Input
+                    placeholder={`Cerca in ${compName} (nome o seriale)`}
+                    value={search[compName] ?? ""}
+                    onChange={(e) => setSearch({ ...search, [compName]: e.target.value })}
+                    className="pl-8"
+                  />
+                </div>
+                <select
+                  value={rFilter}
+                  onChange={(e) =>
+                    setRarityFilter({
+                      ...rarityFilter,
+                      [compName]: e.target.value as "ALL" | Rarity,
+                    })
+                  }
+                  className={selectClass}
+                  aria-label="Filtra per rarità"
+                >
+                  <option value="ALL">Rarità: TUTTE</option>
+                  {RARITIES.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={sFilter}
+                  onChange={(e) => setSeasonFilter({ ...seasonFilter, [compName]: e.target.value })}
+                  className={selectClass}
+                  aria-label="Filtra per stagione"
+                >
+                  <option value="ALL">Stagione: TUTTE</option>
+                  {SEASONS.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={roFilter}
+                  onChange={(e) =>
+                    setRoleFilter({ ...roleFilter, [compName]: e.target.value as "ALL" | Role })
+                  }
+                  className={selectClass}
+                  aria-label="Filtra per ruolo"
+                >
+                  <option value="ALL">Tutti i ruoli</option>
+                  {ROLES.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {allComp.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Nessuna carta in questo campionato.</p>
+              ) : list.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  Nessuna carta trovata con i filtri selezionati.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {list.map(({ c: card, i }) => (
+                    <div
+                      key={i}
+                      className="rounded-md border border-border bg-background/40 px-3 py-2 text-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="min-w-0">
+                          <span className="font-medium">{card.name}</span>{" "}
+                          <span className="text-muted-foreground">({card.season})</span>
+                          {card.rarity && (
+                            <span className="ml-2 rounded bg-secondary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-secondary-foreground">
+                              {card.rarity}
                             </span>
-                          </>
-                        ) : (
-                          <span className="font-semibold text-accent">In: {card.buy.toFixed(2)}€</span>
-                        )}
-                        {card.sell != null && (
-                          <span className="text-xs text-muted-foreground">Out: {card.sell.toFixed(2)}€</span>
-                        )}
-                        <Button variant="ghost" onClick={() => openEdit(i)} className="!px-2 !py-1 text-xs">
-                          ✏️ Modifica
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          onClick={() => removeCard(i)}
-                          className="!px-2 !py-1 text-xs !text-destructive"
-                          aria-label={`Rimuovi ${card.name}`}
-                        >
-                          🗑️
-                        </Button>
-                      </div>
-                    </div>
-                    {card.swap && (
-                      <div className="mt-2 rounded border border-border/60 bg-background/40 p-2 text-xs">
-                        <div className="mb-1 text-muted-foreground">
-                          💶 Soldi dati: <span className="font-semibold text-foreground">€{card.swap.cash.toFixed(2)}</span>
-                          {card.swap.cashReceived != null && card.swap.cashReceived > 0 && (
+                          )}
+                          {card.serial && (
+                            <span className="ml-2 text-xs text-muted-foreground">
+                              #{card.serial}
+                            </span>
+                          )}
+                          {card.swap && (
+                            <span className="ml-2 text-xs font-semibold text-accent">
+                              (€{card.buy.toFixed(2)})
+                            </span>
+                          )}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {card.swap ? (
                             <>
-                              {" · "}💰 Soldi ricevuti:{" "}
-                              <span className="font-semibold text-foreground">€{card.swap.cashReceived.toFixed(2)}</span>
+                              <span className="font-semibold text-accent">
+                                €{card.buy.toFixed(2)}
+                              </span>
+                              <span className="rounded bg-primary/15 px-2 py-0.5 text-xs font-semibold text-primary">
+                                🔄 Scambio
+                              </span>
                             </>
+                          ) : (
+                            <span className="font-semibold text-accent">
+                              In: {card.buy.toFixed(2)}€
+                            </span>
+                          )}
+                          {card.sell != null && (
+                            <span className="text-xs text-muted-foreground">
+                              Out: {card.sell.toFixed(2)}€
+                            </span>
+                          )}
+                          <Button
+                            variant="ghost"
+                            onClick={() => openEdit(i)}
+                            className="!px-2 !py-1 text-xs"
+                          >
+                            ✏️ Modifica
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            onClick={() => removeCard(i)}
+                            className="!px-2 !py-1 text-xs !text-destructive"
+                            aria-label={`Rimuovi ${card.name}`}
+                          >
+                            🗑️
+                          </Button>
+                        </div>
+                      </div>
+                      {card.swap && (
+                        <div className="mt-2 rounded border border-border/60 bg-background/40 p-2 text-xs">
+                          <div className="mb-1 text-muted-foreground">
+                            💶 Soldi dati:{" "}
+                            <span className="font-semibold text-foreground">
+                              €{card.swap.cash.toFixed(2)}
+                            </span>
+                            {card.swap.cashReceived != null && card.swap.cashReceived > 0 && (
+                              <>
+                                {" · "}💰 Soldi ricevuti:{" "}
+                                <span className="font-semibold text-foreground">
+                                  €{card.swap.cashReceived.toFixed(2)}
+                                </span>
+                              </>
+                            )}
+                          </div>
+                          {card.swap.players.length > 0 ? (
+                            <ul className="space-y-0.5">
+                              {card.swap.players.map((p, k) => (
+                                <li key={k} className="flex flex-wrap gap-x-2">
+                                  <span className="font-medium">{p.name}</span>
+                                  {p.season && (
+                                    <span className="text-muted-foreground">({p.season})</span>
+                                  )}
+                                  {p.rarity && (
+                                    <span className="text-muted-foreground">[{p.rarity}]</span>
+                                  )}
+                                  {p.serial && (
+                                    <span className="text-muted-foreground">#{p.serial}</span>
+                                  )}
+                                  <span className="ml-auto text-accent">€{p.value.toFixed(2)}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div className="text-muted-foreground">
+                              Nessun giocatore nello scambio.
+                            </div>
                           )}
                         </div>
-                        {card.swap.players.length > 0 ? (
-                          <ul className="space-y-0.5">
-                            {card.swap.players.map((p, k) => (
-                              <li key={k} className="flex flex-wrap gap-x-2">
-                                <span className="font-medium">{p.name}</span>
-                                {p.season && <span className="text-muted-foreground">({p.season})</span>}
-                                {p.rarity && <span className="text-muted-foreground">[{p.rarity}]</span>}
-                                {p.serial && <span className="text-muted-foreground">#{p.serial}</span>}
-                                <span className="ml-auto text-accent">€{p.value.toFixed(2)}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <div className="text-muted-foreground">Nessun giocatore nello scambio.</div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </Card>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
           </div>
         );
       })}
 
       <QuickJump competitions={competitions} />
-
 
       {editIdx != null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -898,7 +1003,11 @@ function GalleriaPage() {
               </div>
               <div>
                 <Label>Stagione</Label>
-                <Input list="seasons-list" value={eSeason} onChange={(e) => setESeason(e.target.value)} />
+                <Input
+                  list="seasons-list"
+                  value={eSeason}
+                  onChange={(e) => setESeason(e.target.value)}
+                />
               </div>
               <div>
                 <Label>Rarità</Label>
@@ -908,7 +1017,9 @@ function GalleriaPage() {
                   className={selectClass}
                 >
                   {RARITIES.map((r) => (
-                    <option key={r} value={r}>{r}</option>
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -920,7 +1031,9 @@ function GalleriaPage() {
                   className={selectClass}
                 >
                   {ROLES.map((r) => (
-                    <option key={r} value={r}>{r}</option>
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -939,20 +1052,34 @@ function GalleriaPage() {
               </div>
               <div>
                 <Label>Seriale</Label>
-                <Input value={eSerial} onChange={(e) => setESerial(e.target.value)} placeholder="Es. #123" />
+                <Input
+                  value={eSerial}
+                  onChange={(e) => setESerial(e.target.value)}
+                  placeholder="Es. #123"
+                />
               </div>
               <div>
                 <Label>Tabellone (competizione)</Label>
-                <select value={eComp} onChange={(e) => setEComp(e.target.value)} className={selectClass}>
+                <select
+                  value={eComp}
+                  onChange={(e) => setEComp(e.target.value)}
+                  className={selectClass}
+                >
                   {competitions.map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
                   ))}
                 </select>
               </div>
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <Button variant="ghost" onClick={closeEdit}>Annulla</Button>
-              <Button variant="accent" onClick={saveEdit}>Salva</Button>
+              <Button variant="ghost" onClick={closeEdit}>
+                Annulla
+              </Button>
+              <Button variant="accent" onClick={saveEdit}>
+                Salva
+              </Button>
             </div>
           </div>
         </div>

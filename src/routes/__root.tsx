@@ -81,16 +81,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "SorareHub — Galleria, Arene, Obbiettivi & ROI" },
-      { name: "description", content: "Gestionale per il tuo account Sorare: Gestione Galleria, Competizioni, Arene, Obiettivi & ROI." },
+      {
+        name: "description",
+        content:
+          "Gestionale per il tuo account Sorare: Gestione Galleria, Competizioni, Arene, Obiettivi & ROI.",
+      },
       { property: "og:title", content: "SorareHub — Galleria, Arene, Obbiettivi & ROI" },
-      { property: "og:description", content: "Gestionale per il tuo account Sorare: Gestione Galleria, Competizioni, Arene, Obiettivi & ROI." },
+      {
+        property: "og:description",
+        content:
+          "Gestionale per il tuo account Sorare: Gestione Galleria, Competizioni, Arene, Obiettivi & ROI.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "SorareHub — Galleria, Arene, Obbiettivi & ROI" },
-      { name: "twitter:description", content: "Gestionale per il tuo account Sorare: Gestione Galleria, Competizioni, Arene, Obiettivi & ROI." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4F4D4x48GucuOXxEwPRCEiFfu4O2/social-images/social-1784033064737-sorare_logo.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4F4D4x48GucuOXxEwPRCEiFfu4O2/social-images/social-1784033064737-sorare_logo.webp" },
+      {
+        name: "twitter:description",
+        content:
+          "Gestionale per il tuo account Sorare: Gestione Galleria, Competizioni, Arene, Obiettivi & ROI.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/4F4D4x48GucuOXxEwPRCEiFfu4O2/social-images/social-1784033064737-sorare_logo.webp",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/4F4D4x48GucuOXxEwPRCEiFfu4O2/social-images/social-1784033064737-sorare_logo.webp",
+      },
     ],
     links: [
       {

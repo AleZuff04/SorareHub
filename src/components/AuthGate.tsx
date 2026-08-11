@@ -27,7 +27,6 @@ export function AuthGate({ children }: { children: ReactNode }) {
     }
   }, [authReady, session, isPublic, location.pathname, location.search, router]);
 
-
   // Revalidate session against the server: if the admin deleted the account
   // (or it was otherwise invalidated), force sign-out and back to /auth.
   useEffect(() => {

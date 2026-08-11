@@ -1,9 +1,30 @@
 import { useEffect } from "react";
 
+interface GoogleTranslateElementConstructor {
+  new (
+    options: {
+      pageLanguage: string;
+      includedLanguages: string;
+      autoDisplay: boolean;
+      layout: unknown;
+    },
+    elementId: string,
+  ): unknown;
+  InlineLayout: {
+    SIMPLE: unknown;
+  };
+}
+
+interface GoogleNamespace {
+  translate?: {
+    TranslateElement: GoogleTranslateElementConstructor;
+  };
+}
+
 declare global {
   interface Window {
     googleTranslateElementInit?: () => void;
-    google?: any;
+    google?: GoogleNamespace;
   }
 }
 

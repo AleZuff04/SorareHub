@@ -7,7 +7,14 @@ export type Role = "GK" | "DF" | "MD" | "FW";
 export type SwapDetail = {
   cash: number;
   cashReceived?: number;
-  players: { name: string; season: string; serial: string; value: number; rarity?: Rarity; role?: Role }[];
+  players: {
+    name: string;
+    season: string;
+    serial: string;
+    value: number;
+    rarity?: Rarity;
+    role?: Role;
+  }[];
 };
 export type Card = {
   name: string;
@@ -21,9 +28,15 @@ export type Card = {
   swap?: SwapDetail;
 };
 export type ArenaSession = { spent: number; won: number; xp: number };
-export type PremiKey = "MLS_Streak" | "MLS_Leaderboard" | "Eredivisie_Streak" | "Eredivisie_Leaderboard";
+export type PremiKey =
+  "MLS_Streak" | "MLS_Leaderboard" | "Eredivisie_Streak" | "Eredivisie_Leaderboard";
 export type PremiMap = Record<string, number>;
-export type RoiEntry = { cash: number; essences: number; xp: number; essR?: Partial<Record<Rarity, number>> };
+export type RoiEntry = {
+  cash: number;
+  essences: number;
+  xp: number;
+  essR?: Partial<Record<Rarity, number>>;
+};
 export type RoiTable = Record<string, RoiEntry>;
 export type WinLogEntry = { key: string; amount: number; date: string };
 export type RicaricaEntry = { amount: number; date: string; note?: string };
@@ -55,7 +68,15 @@ export type WheelSpin = {
   essences?: { rarity?: Rarity; qty: number };
   xp?: number;
   credits?: number;
-  star?: { name: string; season: string; rarity?: Rarity; role?: Role; serial?: string; value: number; comp: string };
+  star?: {
+    name: string;
+    season: string;
+    rarity?: Rarity;
+    role?: Role;
+    serial?: string;
+    value: number;
+    comp: string;
+  };
   indizi?: { type: IndizioType; qty: number };
 };
 
@@ -197,9 +218,13 @@ export function SorareProvider({ children }: { children: ReactNode }) {
       setWheelSpins(p?.wheelSpins ?? []);
       setDataReady(true);
       // release skip after state settles
-      setTimeout(() => { skipSaveRef.current = false; }, 50);
+      setTimeout(() => {
+        skipSaveRef.current = false;
+      }, 50);
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [session, authReady]);
 
   // Debounced save to Supabase
@@ -207,14 +232,46 @@ export function SorareProvider({ children }: { children: ReactNode }) {
     if (!session || !dataReady || skipSaveRef.current) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(async () => {
-      const payload: Payload = { cards, competitions, sessions, sessionsRare, sessionsSr, premi, roi, winLog, ricariche, wonCards, crafts, wheelSpins };
-      const { error } = await supabase
-        .from("user_data")
-        .upsert({ user_id: session.user.id, data: payload as never, updated_at: new Date().toISOString() });
+      const payload: Payload = {
+        cards,
+        competitions,
+        sessions,
+        sessionsRare,
+        sessionsSr,
+        premi,
+        roi,
+        winLog,
+        ricariche,
+        wonCards,
+        crafts,
+        wheelSpins,
+      };
+      const { error } = await supabase.from("user_data").upsert({
+        user_id: session.user.id,
+        data: payload as never,
+        updated_at: new Date().toISOString(),
+      });
       if (error) console.error("Save user_data failed", error);
     }, 400);
-    return () => { if (saveTimer.current) clearTimeout(saveTimer.current); };
-  }, [cards, competitions, sessions, sessionsRare, sessionsSr, premi, roi, winLog, ricariche, wonCards, crafts, wheelSpins, session, dataReady]);
+    return () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+    };
+  }, [
+    cards,
+    competitions,
+    sessions,
+    sessionsRare,
+    sessionsSr,
+    premi,
+    roi,
+    winLog,
+    ricariche,
+    wonCards,
+    crafts,
+    wheelSpins,
+    session,
+    dataReady,
+  ]);
 
   // Keep premi in sync with competitions
   useEffect(() => {
@@ -235,17 +292,41 @@ export function SorareProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [competitions, dataReady]);
 
-  const signOut = async () => { await supabase.auth.signOut(); };
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <Ctx.Provider
       value={{
-        cards, setCards, competitions, setCompetitions, sessions, setSessions,
-        sessionsRare, setSessionsRare, sessionsSr, setSessionsSr,
-        premi, setPremi, roi, setRoi, winLog, setWinLog,
-        ricariche, setRicariche, wonCards, setWonCards,
-        crafts, setCrafts, wheelSpins, setWheelSpins,
-        session, authReady, dataReady, signOut,
+        cards,
+        setCards,
+        competitions,
+        setCompetitions,
+        sessions,
+        setSessions,
+        sessionsRare,
+        setSessionsRare,
+        sessionsSr,
+        setSessionsSr,
+        premi,
+        setPremi,
+        roi,
+        setRoi,
+        winLog,
+        setWinLog,
+        ricariche,
+        setRicariche,
+        wonCards,
+        setWonCards,
+        crafts,
+        setCrafts,
+        wheelSpins,
+        setWheelSpins,
+        session,
+        authReady,
+        dataReady,
+        signOut,
       }}
     >
       {children}

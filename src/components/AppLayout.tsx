@@ -25,12 +25,24 @@ export function AppLayout({ title, children }: { title: string; children: ReactN
           onClick={() => setOpen(true)}
           className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground hover:bg-secondary md:hidden"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="20" y2="18" />
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          >
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
           </svg>
         </button>
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-md bg-primary/20 grid place-items-center text-primary font-bold">S</div>
+          <div className="h-8 w-8 rounded-md bg-primary/20 grid place-items-center text-primary font-bold">
+            S
+          </div>
           <div className="leading-tight">
             <div className="text-xs text-muted-foreground">Sorare Manager</div>
             <h1 className="text-base font-semibold">{title}</h1>
@@ -58,7 +70,9 @@ export function AppLayout({ title, children }: { title: string; children: ReactN
                   aria-label="Chiudi menu"
                   onClick={() => setOpen(false)}
                   className="h-8 w-8 rounded-md border border-sidebar-border text-sidebar-foreground"
-                >✕</button>
+                >
+                  ✕
+                </button>
               </div>
               <SidebarNav pathname={location.pathname} onNavigate={() => setOpen(false)} />
             </aside>
@@ -79,11 +93,17 @@ export function AppLayout({ title, children }: { title: string; children: ReactN
         rel="noopener noreferrer"
         onClick={(e) => {
           e.preventDefault();
-          window.open("https://sorare.com/it/football/my-club/alezuff-dnp", "_blank", "noopener,noreferrer");
+          window.open(
+            "https://sorare.com/it/football/my-club/alezuff-dnp",
+            "_blank",
+            "noopener,noreferrer",
+          );
         }}
         className="fixed bottom-4 left-4 z-40 max-w-[200px] rounded-lg border border-border bg-card/80 px-3 py-2 text-xs text-muted-foreground shadow-lg backdrop-blur transition-colors hover:bg-card hover:text-foreground"
       >
-        <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">Follow me on Sorare</span>
+        <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">
+          Follow me on Sorare
+        </span>
         <span className="block truncate text-[11px] font-medium text-primary">alezuff-dnp</span>
       </a>
     </div>
@@ -91,7 +111,32 @@ export function AppLayout({ title, children }: { title: string; children: ReactN
 }
 
 function BackupBar() {
-  const { cards, competitions, sessions, sessionsRare, sessionsSr, premi, roi, winLog, ricariche, wonCards, crafts, wheelSpins, setCards, setCompetitions, setSessions, setSessionsRare, setSessionsSr, setPremi, setRoi, setWinLog, setRicariche, setWonCards, setCrafts, setWheelSpins } = useSorare();
+  const {
+    cards,
+    competitions,
+    sessions,
+    sessionsRare,
+    sessionsSr,
+    premi,
+    roi,
+    winLog,
+    ricariche,
+    wonCards,
+    crafts,
+    wheelSpins,
+    setCards,
+    setCompetitions,
+    setSessions,
+    setSessionsRare,
+    setSessionsSr,
+    setPremi,
+    setRoi,
+    setWinLog,
+    setRicariche,
+    setWonCards,
+    setCrafts,
+    setWheelSpins,
+  } = useSorare();
   const fileRef = useRef<HTMLInputElement>(null);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -121,11 +166,27 @@ function BackupBar() {
     <div className="mt-8 rounded-xl border border-border bg-card p-4">
       <div className="mb-2 text-sm font-semibold">🔒 Backup dati</div>
       <p className="mb-3 text-xs text-muted-foreground">
-        I tuoi dati sono salvati in modo sicuro sul cloud, associati al tuo account. Puoi comunque esportare un backup locale.
+        I tuoi dati sono salvati in modo sicuro sul cloud, associati al tuo account. Puoi comunque
+        esportare un backup locale.
       </p>
       <div className="flex flex-wrap gap-2">
         <button
-          onClick={() => exportBackup({ cards, competitions, sessions, sessionsRare, sessionsSr, premi, roi, winLog, ricariche, wonCards, crafts, wheelSpins })}
+          onClick={() =>
+            exportBackup({
+              cards,
+              competitions,
+              sessions,
+              sessionsRare,
+              sessionsSr,
+              premi,
+              roi,
+              winLog,
+              ricariche,
+              wonCards,
+              crafts,
+              wheelSpins,
+            })
+          }
           className="rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90"
         >
           ⬇️ Esporta file di Backup
@@ -156,9 +217,7 @@ function BackupBar() {
 function SidebarNav({ pathname, onNavigate }: { pathname: string; onNavigate: () => void }) {
   const { session } = useSorare();
   const isAdmin = (session?.user.email ?? "").toLowerCase() === "zuffolia@gmail.com";
-  const items = isAdmin
-    ? [...nav, { to: "/admin" as const, label: "Admin — Richieste" }]
-    : nav;
+  const items = isAdmin ? [...nav, { to: "/admin" as const, label: "Admin — Richieste" }] : nav;
   return (
     <nav className="flex flex-col gap-1">
       {items.map((item) => {
