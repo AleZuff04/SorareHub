@@ -5,7 +5,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { requestAccess } from "@/lib/access-requests.functions";
 import { resolvePrimaryEmail } from "@/lib/profile.functions";
-import sorareLogoAsset from "@/assets/sorare_logo.png.asset.json";
+
+const SORARE_LOGO_URL =
+  "https://storage.googleapis.com/gpt-engineer-file-uploads/4F4D4x48GucuOXxEwPRCEiFfu4O2/social-images/social-1784033064737-sorare_logo.webp";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { next?: string } =>
@@ -110,7 +112,7 @@ function AuthPage() {
       <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
         <div className="mb-6 text-center">
           <img
-            src={sorareLogoAsset.url}
+            src={SORARE_LOGO_URL}
             alt="SorareHub Logo"
             className="mx-auto mb-3 h-20 w-20 rounded-2xl object-cover shadow-lg shadow-blue-500/30"
           />
