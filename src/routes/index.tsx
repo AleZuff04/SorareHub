@@ -4,7 +4,7 @@ import { Button, Card, Input, Label, PageTitle } from "@/components/ui-kit";
 import { type Rarity, type Role } from "@/lib/sorare-store";
 import { useGalleriaForm } from "@/hooks/useGalleriaForm";
 
-// 1. Costanti statiche dichiarate in alto (evitano l'errore di sintassi della regex)
+// 1. Costanti statiche messe IN ALTO per evitare errori di sintassi
 const RARITIES: Rarity[] = ["LIMITED", "RARE", "SR", "UNIQUE"];
 const ROLES: Role[] = ["GK", "DF", "MD", "FW"];
 const SEASONS: string[] = [
@@ -15,19 +15,19 @@ const SEASONS: string[] = [
   "2022/2023",
 ];
 
-// 2. Definizione della Rotta TanStack
+// 2. Registrazione della rotta TanStack
 export const Route = createFileRoute("/")({
   component: IndexPage,
 });
 
-// 3. Componente Principale della pagina
+// 3. Componente della pagina
 function IndexPage() {
   const { state, actions } = useGalleriaForm();
 
   return (
     <AppLayout>
       <PageTitle>Galleria Carte</PageTitle>
-      
+
       <Card className="p-4 my-4">
         <form onSubmit={actions.handleSubmit} className="space-y-4">
           <div>
@@ -49,7 +49,9 @@ function IndexPage() {
                 className="w-full rounded-md border border-border bg-background p-2 text-sm"
               >
                 {RARITIES.map((r) => (
-                  <option key={r} value={r}>{r}</option>
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
                 ))}
               </select>
             </div>
@@ -62,7 +64,9 @@ function IndexPage() {
                 className="w-full rounded-md border border-border bg-background p-2 text-sm"
               >
                 {ROLES.map((r) => (
-                  <option key={r} value={r}>{r}</option>
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
                 ))}
               </select>
             </div>
@@ -75,7 +79,9 @@ function IndexPage() {
                 className="w-full rounded-md border border-border bg-background p-2 text-sm"
               >
                 {SEASONS.map((s) => (
-                  <option key={s} value={s}>{s}</option>
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
                 ))}
               </select>
             </div>
@@ -85,9 +91,7 @@ function IndexPage() {
             <Button type="button" variant="outline" onClick={actions.handleReset}>
               Reset
             </Button>
-            <Button type="submit">
-              Filtra
-            </Button>
+            <Button type="submit">Filtra</Button>
           </div>
         </form>
       </Card>
